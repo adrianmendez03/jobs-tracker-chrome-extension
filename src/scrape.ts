@@ -1,5 +1,7 @@
 import express from "express"
-import puppeteer, { Browser } from "puppeteer"
+import puppeteer, { Browser, ElementHandle } from "puppeteer"
+
+import { fetchScrapePaths } from "./utils"
 
 export const router = express.Router()
 let browser: Browser
@@ -8,30 +10,41 @@ let browser: Browser
 })()
 
 router.post("/", async (req, res) => {
-  const page = await browser.newPage()
+  const { url } = req.body
+  const format = fetchScrapePaths(url)
 
-  await page.goto(req.body.url)
-
-  const [companyName] = await page.$x(
-    '//*[@id="viewJobSSRRoot"]/div[1]/div[3]/div[1]/div[2]/div/div/div[1]/div'
-  )
-
-  const [title] = await page.$x(
-    '//*[@id="viewJobSSRRoot"]/div[1]/div[3]/div[1]/div[1]/h1'
-  )
-  const [location] = await page.$x(
-    '//*[@id="viewJobSSRRoot"]/div[1]/div[3]/div[1]/div[2]/div/div/div[3]'
-  )
-  const [description] = await page.$x('//*[@id="jobDescriptionText"]')
-
-  const data = {
-    title: await page.evaluate((el) => el.textContent, title),
-    companyName: await page.evaluate((el) => el.textContent, companyName),
-    location: await page.evaluate((el) => el.textContent, location),
-    description: await page.evaluate((el) => el.textContent, description),
+  let data = {
+    title: "",
+    company: "",
+    location: "",
+    description: "",
   }
 
-  await page.close()
+  if (format) {
+    try {
+      const page = await browser.newPage()
+
+      await page.goto(url)
+
+      await page.screenshot({ path: "me.png" })
+
+      const [company] = await page.$x(format.company)
+      const [title] = await page.$x(format.title)
+      const [location] = await page.$x(format.location)
+      const [description] = await page.$x(format.description)
+
+      data = {
+        title: await page.evaluate((el) => el.textContent, title),
+        company: await page.evaluate((el) => el.textContent, company),
+        location: await page.evaluate((el) => el.textContent, location),
+        description: await page.evaluate((el) => el.innerHTML, description),
+      }
+
+      await page.close()
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   res.json({ ...data })
 })
