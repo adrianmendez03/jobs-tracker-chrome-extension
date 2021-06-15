@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
     description: "",
   }
 
-  console.log("tripped")
+  console.log("tripped", url)
 
   if (format) {
     try {
