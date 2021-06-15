@@ -2,14 +2,14 @@
   "name": "job-scrapper",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "engines": {
     "node": "14.15.3"
   },
   "scripts": {
     "start": "node dist/server.js",
     "postinstall": "tsc",
-    "watch-node": "nodemon ./dist/server.js",
+    "watch-node": "nodemon dist/server.js",
     "watch-ts": "tsc -w",
     "deploy": "git add . && git commit -m Heroku && git push heroku"
   },
