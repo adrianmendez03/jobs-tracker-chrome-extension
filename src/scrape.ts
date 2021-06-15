@@ -16,6 +16,8 @@ router.post("/", async (req, res) => {
     description: "",
   }
 
+  console.log("tripped")
+
   if (format) {
     try {
       const browser = await puppeteer.launch({
