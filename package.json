@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "14.15.3"
+  },
   "scripts": {
-    "start": "tsnd --respawn src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "start": "node dist/server.js",
+    "postinstall": "tsc",
+    "watch-node": "nodemon dist/index.js",
+    "watch-ts": "tsc -w",
+    "deploy": "git add . && git commit -m Heroku && git push  heroku master"
   },
   "keywords": [],
   "author": "",
