@@ -1,13 +1,9 @@
 import express from "express"
-import puppeteer, { Browser, ElementHandle } from "puppeteer"
+import puppeteer from "puppeteer"
 
 import { fetchScrapePaths } from "./utils"
 
 export const router = express.Router()
-let browser: Browser
-;(async function () {
-  browser = await puppeteer.launch()
-})()
 
 router.post("/", async (req, res) => {
   const { url } = req.body
@@ -22,6 +18,7 @@ router.post("/", async (req, res) => {
 
   if (format) {
     try {
+      const browser = await puppeteer.launch()
       const page = await browser.newPage()
 
       await page.goto(url)
