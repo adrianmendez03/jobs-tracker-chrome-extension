@@ -47,6 +47,5 @@ router.post("/", async (req, res) => {
       console.log(e)
     }
   }
-
   res.json({ ...data })
 })
