@@ -26,12 +26,12 @@ router.post("/", async (req, res) => {
 
       await page.goto(url)
 
-      await page.screenshot({ path: "me.png" })
-
       const [company] = await page.$x(format.company)
       const [title] = await page.$x(format.title)
       const [location] = await page.$x(format.location)
       const [description] = await page.$x(format.description)
+
+      console.log("trippped")
 
       data = {
         title: await page.evaluate((el) => el.textContent, title),
