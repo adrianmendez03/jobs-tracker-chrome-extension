@@ -9,8 +9,6 @@ router.post("/", async (req, res) => {
   const { url } = req.body
   const format = fetchScrapePaths(url)
 
-  console.log(format)
-
   let data = {
     title: "",
     company: "",
@@ -32,8 +30,6 @@ router.post("/", async (req, res) => {
       const [title] = await page.$x(format.title)
       const [location] = await page.$x(format.location)
       const [description] = await page.$x(format.description)
-
-      console.log(company, title, location)
 
       data = {
         title: await page.evaluate((el) => el.textContent, title),
