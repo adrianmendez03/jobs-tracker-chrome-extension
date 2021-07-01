@@ -25,7 +25,10 @@ router.post("/", async (req, res) => {
 
       const page = await browser.newPage()
 
-      await page.goto(url)
+      await page.goto(url, {
+        waitUntil: "networkidle0",
+        timeout: 30000,
+      })
 
       await page.waitForNavigation()
 
