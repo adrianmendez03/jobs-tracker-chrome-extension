@@ -9,7 +9,7 @@ router.post("/", async (req, res) => {
   const { url } = req.body
   const format = fetchScrapePaths(url)
 
-  let data = {
+  let jobInfo = {
     title: "",
     company: "",
     location: "",
@@ -18,10 +18,7 @@ router.post("/", async (req, res) => {
 
   if (format) {
     try {
-      const browser = await puppeteer.launch({
-        headless: true,
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      })
+      const browser = await puppeteer.launch()
 
       const page = await browser.newPage()
 
@@ -32,7 +29,7 @@ router.post("/", async (req, res) => {
       const [location] = await page.$x(format.location)
       const [description] = await page.$x(format.description)
 
-      data = {
+      jobInfo = {
         title: await page.evaluate((el) => el.textContent, title),
         company: await page.evaluate((el) => el.textContent, company),
         location: await page.evaluate((el) => el.textContent, location),
@@ -45,5 +42,5 @@ router.post("/", async (req, res) => {
     }
   }
 
-  res.json({ ...data })
+  res.json({ ...jobInfo })
 })
