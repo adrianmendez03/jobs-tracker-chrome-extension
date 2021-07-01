@@ -27,6 +27,8 @@ router.post("/", async (req, res) => {
 
       await page.goto(url)
 
+      await page.waitForNavigation()
+
       const [company] = await page.$x(format.company)
       const [title] = await page.$x(format.title)
       const [location] = await page.$x(format.location)
