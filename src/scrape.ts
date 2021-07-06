@@ -25,11 +25,6 @@ router.post("/", async (req, res) => {
 
       const page = await browser.newPage()
 
-      await page.goto(url, {
-        waitUntil: "networkidle0",
-        timeout: 30000,
-      })
-
       const [company] = await page.$x(format.company)
       const [title] = await page.$x(format.title)
       const [location] = await page.$x(format.location)
