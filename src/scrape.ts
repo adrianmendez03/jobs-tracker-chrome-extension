@@ -36,6 +36,8 @@ router.post("/", async (req, res) => {
       const [location] = await page.$x(format.location)
       const [description] = await page.$x(format.description)
 
+      console.log(company, title, location, description, format)
+
       jobInfo = {
         title: await page.evaluate((el) => el.textContent, title),
         company: await page.evaluate((el) => el.textContent, company),
