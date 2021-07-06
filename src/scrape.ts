@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
     try {
       const browser = await puppeteer.launch({
         headless: true,
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        args: ["--no-sandbox", "--disable-setuid-sandbox", "--window-size=768,1024"],
       })
 
       const page = await browser.newPage()
